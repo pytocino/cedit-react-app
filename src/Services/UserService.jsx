@@ -2,9 +2,11 @@
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
 const username = "admin";
 const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
-const getUsers = async () => {
+const getUsers = async (page = 1, perPage = 10) => {
+  const url = `${API_URL}/users/?per_page=${perPage}&page=${page}`;
+
   try {
-    const response = await fetch(`${API_URL}/users`, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         Authorization: "Basic " + btoa(username + ":" + application_password),

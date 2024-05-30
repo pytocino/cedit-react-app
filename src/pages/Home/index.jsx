@@ -3,7 +3,7 @@ import { getUserRoles } from "../../Services/UserRoles";
 import { getRoles } from "../../Services/UserService";
 import AjaxLoader from "../../Components/AjaxLoader";
 import { useAuth } from "../../Contexts/authContext";
-// import { addRandomUsers } from "../../Services/AddUsers";
+import { addRandomUsers } from "../../Services/AddUsers";
 
 const Home = () => {
   const [roles, setRoles] = useState({});
@@ -35,12 +35,12 @@ const Home = () => {
     return usersWithRole.map((user) => user.user_login).join(", ");
   };
 
-  // const handleAddRandomUsers = async () => {
-  //   await addRandomUsers(10, roles); // Añadir 10 usuarios aleatorios
-  //   // Refrescar los roles de usuarios después de añadirlos
-  //   const fetchedUserRoles = await getUserRoles();
-  //   setUserRoles(fetchedUserRoles);
-  // };
+  const handleAddRandomUsers = async () => {
+    await addRandomUsers(10, roles); // Añadir 10 usuarios aleatorios
+    // Refrescar los roles de usuarios después de añadirlos
+    const fetchedUserRoles = await getUserRoles();
+    setUserRoles(fetchedUserRoles);
+  };
 
   const roleEntries = Object.entries(roles);
 
@@ -78,7 +78,7 @@ const Home = () => {
             ))
           )}
         </div>
-        {/* <div className="row">
+        <div className="row">
           <div className="col-12">
             <h1>Grupos</h1>
             <button
@@ -88,7 +88,7 @@ const Home = () => {
               Añadir Usuarios Aleatorios
             </button>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

@@ -121,6 +121,23 @@ const BitacoraList = () => {
               </div>
             </div>
           </div>
+          <div className="mt-5 d-flex justify-content-between">
+            <button
+              className="btn btn-primary"
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage}</span>
+            <button
+              className="btn btn-primary"
+              onClick={handleNextPage}
+              disabled={!hasMore}
+            >
+              Next
+            </button>
+          </div>
           <table className="table">
             <thead>
               <tr>
@@ -159,7 +176,7 @@ const BitacoraList = () => {
               ))}
             </tbody>
           </table>
-          <div className="d-flex justify-content-between">
+          <div className="mb-5 d-flex justify-content-between">
             <button
               className="btn btn-primary"
               onClick={handlePreviousPage}
