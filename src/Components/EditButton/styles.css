@@ -1,0 +1,37 @@
+.edit-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: rgb(252, 255, 95);
+  cursor: pointer;
+  border: 2px solid rgb(255, 246, 121);
+  transition-duration: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-svgIcon {
+  width: 18px;
+  z-index: 2;
+}
+
+.edit-svgIcon path {
+  fill: black;
+}
+
+.edit-button:hover {
+  background-color: rgb(252, 255, 0);
+}
+
+.edit-button:active {
+  transform: scale(0.9);
+}
+
+.edit-button:hover .edit-svgIcon {
+  transform: rotate(360deg); /* Rotar 360 grados */
+  transition: transform 0.5s; /* Agregar transición para la animación */
+}

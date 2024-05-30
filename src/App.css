@@ -1,0 +1,63 @@
+/* App.css */
+
+/* Contenedor principal del layout */
+.d-flex {
+  display: flex;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #f8f9fa;
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(-100%);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.sidebar.show {
+  transform: translateX(0);
+}
+
+.content {
+  flex: 1;
+  padding: 10px;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.content-with-sidebar {
+  margin-left: 280px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .content,
+  .content-with-sidebar {
+    margin-left: 0;
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+}
