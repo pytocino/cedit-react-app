@@ -1,18 +1,16 @@
 // src/Services/postService.js
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
-const username = "admin";
-const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
 
-const getPosts = async (page = 1) => {
+const getPosts = async (page = 1, username, password) => {
   try {
     const response = await fetch(
-      `${API_URL}/posts?page=${page}&password=${application_password}`,
+      `${API_URL}/posts?page=${page}&password=${password}`,
       {
         method: "GET",
-        // headers: {
-        //   Authorization: "Basic " + btoa(username + ":" + application_password),
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          Authorization: "Basic " + btoa(username + ":" + password),
+          "Content-Type": "application/json",
+        },
       }
     );
 
@@ -27,13 +25,12 @@ const getPosts = async (page = 1) => {
   }
 };
 
-const createPost = async (post) => {
+const createPost = async (post, username, password) => {
   try {
-    post.password = application_password;
     const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
@@ -50,12 +47,13 @@ const createPost = async (post) => {
   }
 };
 
-const deletePost = async (postId) => {
+const deletePost = async (postId, username, password) => {
   try {
     const response = await fetch(`${API_URL}/posts/${postId}`, {
       method: "DELETE",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
+        "Content-Type": "application/json",
       },
     });
 
@@ -68,13 +66,12 @@ const deletePost = async (postId) => {
   }
 };
 
-const updatePost = async (postId, post) => {
+const updatePost = async (postId, post, username, password) => {
   try {
-    post.password = application_password;
     const response = await fetch(`${API_URL}/posts/${postId}`, {
       method: "PUT",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
@@ -91,12 +88,12 @@ const updatePost = async (postId, post) => {
   }
 };
 
-const getTags = async () => {
+const getTags = async (username, password) => {
   try {
-    const response = await fetch(`${API_URL}/tags`, {
+    const response = await fetch(`${API_URL}/tags/?per_page=100`, {
       method: "GET",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
       },
     });
 
@@ -111,4 +108,40 @@ const getTags = async () => {
   }
 };
 
-export { getPosts, createPost, deletePost, updatePost, getTags };
+// Función para eliminar una etiqueta por ID
+const deleteTag = async (tagId, username, password) => {
+  try {
+    const response = await fetch(`${API_URL}/tags/${tagId}?force=true`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Basic " + btoa(username + ":" + password),
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete tag");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to delete tag:", error);
+    throw error;
+  }
+};
+
+// Función para eliminar todas las etiquetas
+const deleteAllTags = async (username, password) => {
+  try {
+    const tags = await getTags(username, password);
+    const deletePromises = tags.map((tag) =>
+      deleteTag(tag.id, username, password)
+    );
+    await Promise.all(deletePromises);
+    console.log("All tags deleted successfully");
+  } catch (error) {
+    console.error("Failed to delete all tags:", error);
+    throw error;
+  }
+};
+
+export { getPosts, createPost, deletePost, updatePost, getTags, deleteAllTags };

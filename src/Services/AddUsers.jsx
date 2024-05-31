@@ -1,12 +1,10 @@
-const addUser = async (userData) => {
+const addUser = async (userData, username, password) => {
   try {
-    const username = "admin";
-    const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
     const response = await fetch("https://cedit.upct.es/wp-json/wp/v2/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
       },
       body: JSON.stringify(userData),
     });
@@ -38,11 +36,11 @@ const generateRandomUser = (roles) => {
   };
 };
 
-const addRandomUsers = async (count, roles) => {
+const addRandomUsers = async (count, roles, username, password) => {
   const users = [];
   for (let i = 0; i < count; i++) {
     const newUser = generateRandomUser(roles);
-    const addedUser = await addUser(newUser);
+    const addedUser = await addUser(newUser, username, password);
     if (addedUser) {
       users.push(addedUser);
     }

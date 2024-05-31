@@ -16,8 +16,8 @@ const AppContent = () => {
   useEffect(() => {
     if (!authenticated && isAuthenticated()) {
       const token = isAuthenticated();
-      const [username] = atob(token).split(":");
-      login(username, token);
+      const [username, password] = atob(token).split(":");
+      login(username, password);
     }
   }, [authenticated, login]);
 

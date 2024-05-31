@@ -1,7 +1,5 @@
-const getUserRoles = async () => {
+const getUserRoles = async (username, password) => {
   try {
-    const username = "admin";
-    const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
     const perPage = 100; // Puedes ajustar este valor según sea necesario
     const maxPages = 100; // Límite máximo de páginas para evitar bucles infinitos
     let page = 1;
@@ -14,8 +12,7 @@ const getUserRoles = async () => {
         {
           method: "GET",
           headers: {
-            Authorization:
-              "Basic " + btoa(username + ":" + application_password),
+            Authorization: "Basic " + btoa(username + ":" + password),
           },
         }
       );

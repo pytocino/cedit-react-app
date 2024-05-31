@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { createUser, getRoles } from "../Services/UserService";
+import { createUser, getRoles } from "../../Services/UserService";
+import { useAuth } from "../../Contexts/authContext";
+import AjaxLoader from "../AjaxLoader";
 
-const CreateUser = ({ onUserCreated }) => {
+const CreateUser = ({ closeModal }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState(["subscriber"]);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [roleOptions, setRoleOptions] = useState([]);
+  const { auth } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const loadRoles = async () => {
     try {
-      const fetchedRoles = await getRoles();
+      setLoading(true);
+      const fetchedRoles = await getRoles(auth.username, auth.password);
       const transformedRoles = Object.entries(fetchedRoles).map(
         ([id, details]) => ({
           id,
@@ -22,6 +25,8 @@ const CreateUser = ({ onUserCreated }) => {
       setRoleOptions(transformedRoles);
     } catch (error) {
       console.error("Failed to load roles:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,88 +40,72 @@ const CreateUser = ({ onUserCreated }) => {
       username: name,
       name: name,
       email: email,
-      password: password,
       roles: roles,
+      password: password,
     };
 
     try {
-      await createUser(newUser);
-      setSuccessMessage("User created successfully!");
-      setErrorMessage("");
-      onUserCreated(); // Llamar a la función para recargar la lista de usuarios
-      // Limpiar el formulario
+      await createUser(newUser, auth.username, auth.password);
       setName("");
       setEmail("");
       setPassword("");
       setRoles(["subscriber"]);
+      closeModal();
     } catch (error) {
-      console.error("Failed to create user:", error);
-      setErrorMessage("Failed to create user. Please try again.");
-      setSuccessMessage("");
+      console.log(error);
     }
   };
 
   const handleRoleChange = (e) => {
-    const role = e.target.value;
-    if (roles.includes(role)) {
-      setRoles(roles.filter((r) => r !== role));
+    const roleId = e.target.value;
+    if (roles.includes(roleId)) {
+      setRoles(roles.filter((role) => role !== roleId));
     } else {
-      setRoles([...roles, role]);
+      setRoles([...roles, roleId]);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <h2 className="mb-4">Crear usuario</h2>
-          {successMessage && (
-            <div className="alert alert-success">{successMessage}</div>
-          )}
-          {errorMessage && (
-            <div className="alert alert-danger">{errorMessage}</div>
-          )}
+    <div className="container-fluid mt-4">
+      <div className="row">
+        <div className="col-12">
+          <h1>Create User</h1>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12">
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Nombre
-              </label>
+            <div className="form-group mb-2">
+              <label htmlFor="name">Name</label>
               <input
                 type="text"
                 className="form-control"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
+            <div className="form-group mb-2">
+              <label htmlFor="email">Email</label>
               <input
                 type="email"
                 className="form-control"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Contraseña
-              </label>
+            <div className="form-group mb-2">
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 className="form-control"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
               />
             </div>
-            <div className="mb-3">
+            <div className="form-group mb-2">
               <label className="form-label">
                 Roles/Grupos{" "}
                 <small>
@@ -125,7 +114,9 @@ const CreateUser = ({ onUserCreated }) => {
                 </small>
               </label>
               <div className="d-flex flex-wrap">
-                {Array.isArray(roleOptions) && roleOptions.length > 0 ? (
+                {loading ? (
+                  <AjaxLoader />
+                ) : Array.isArray(roleOptions) && roleOptions.length > 0 ? (
                   roleOptions.map((role) => (
                     <div key={role.id} className="form-check me-3">
                       <input
@@ -150,7 +141,7 @@ const CreateUser = ({ onUserCreated }) => {
               </div>
             </div>
             <button type="submit" className="btn btn-primary">
-              Crear usuario
+              Create User
             </button>
           </form>
         </div>

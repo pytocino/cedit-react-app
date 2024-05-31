@@ -1,7 +1,11 @@
-import PostManagement from "../../Components/PostManagement";
+import PostList from "../../Components/PostList";
 
 const Posts = () => {
-  return <PostManagement />;
+  return (
+    <div className="container mt-4">
+      <PostList />
+    </div>
+  );
 };
 
 export default Posts;
