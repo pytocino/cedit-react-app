@@ -1,7 +1,11 @@
-import BitacoraManagement from "../../Components/BitacoraManagement";
+import BitacoraList from "../../Components/BitacoraList";
 
 const Bitacora = () => {
-  return <BitacoraManagement />;
+  return (
+    <div className="container mt-4">
+      <BitacoraList />
+    </div>
+  );
 };
 
 export default Bitacora;

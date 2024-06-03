@@ -1,47 +1,56 @@
 import React, { useState, useEffect, useRef } from "react";
-import { deletePost, getPosts, getTags } from "../../Services/PostService";
+import { getBitacoras } from "../../Services/BitacoraService";
 import AjaxLoader from "../AjaxLoader";
+import { deletePost, getTags } from "../../Services/PostService";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 import { useAuth } from "../../Contexts/authContext";
 import AddButton from "../AddButton";
-import Modal from "../Modal"; // Importa el modal genérico
-import CreatePost from "../CreatePost";
-import EditPost from "../EditPost";
+import Modal from "../Modal";
+import CreateBitacora from "../CreateBitacora";
+import EditBitacora from "../EditBitacora";
 
-const PostList = () => {
-  const [posts, setPosts] = useState([]);
+const BitacoraList = () => {
+  const [bitacoras, setBitacoras] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [tags, setTags] = useState([]);
-  const prevPagePostsRef = useRef([]);
+  const prevPageBitacorasRef = useRef([]);
   const { auth } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState(null); // Estado para el contenido del modal
-  const [success, setSuccess] = useState(false); // Estado para mostrar mensaje de éxito
-  const [error, setError] = useState(null); // Estado para mostrar mensaje de error
+  const [modalContent, setModalContent] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  const loadPosts = async (page = 1) => {
+  const loadBitacoras = async (page = 1) => {
     try {
       setLoading(true);
-      const fetchedPosts = await getPosts(page, auth.username, auth.password);
-      const fetchedTags = await getTags(auth.username, auth.password);
-      setPosts(fetchedPosts);
-      setTags(fetchedTags);
-      // Verificar si hay más de 10 resultados y si los resultados son diferentes de la página anterior
-      setHasMore(
-        fetchedPosts.length >= 10 &&
-          !arraysAreEqual(fetchedPosts, prevPagePostsRef.current)
+      const tags = selectedTags.length > 0 ? selectedTags.join(",") : null;
+      const fetchedBitacoras = await getBitacoras(
+        page,
+        tags,
+        auth.username,
+        auth.password
       );
-      prevPagePostsRef.current = fetchedPosts.slice(); // Copiar los resultados de la página actual para la próxima comparación
+      const fetchedTags = await getTags(auth.username, auth.password);
+
+      setBitacoras(fetchedBitacoras);
+      setTags(fetchedTags);
+      setHasMore(
+        fetchedBitacoras.length >= 10 &&
+          !arraysAreEqual(fetchedBitacoras, prevPageBitacorasRef.current)
+      );
+      prevPageBitacorasRef.current = fetchedBitacoras.slice();
     } catch (error) {
-      console.error("Failed to load posts:", error);
+      console.error("Failed to load bitacoras:", error);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     if (success || error) {
       setShowAlert(true);
@@ -56,15 +65,15 @@ const PostList = () => {
   }, [success, error]);
 
   useEffect(() => {
-    loadPosts(currentPage);
-  }, [currentPage]);
+    loadBitacoras(currentPage);
+  }, [currentPage, selectedTags]);
 
-  const handleDelete = async (postId) => {
+  const handleDelete = async (bitacoraId) => {
     try {
-      await deletePost(postId, auth.username, auth.password);
-      loadPosts(currentPage);
+      await deletePost(bitacoraId, auth.username, auth.password);
+      loadBitacoras(currentPage);
     } catch (error) {
-      console.error("Failed to delete post:", error);
+      console.error("Failed to delete bitacora:", error);
     }
   };
 
@@ -77,20 +86,22 @@ const PostList = () => {
   };
 
   const handleAddButtonClick = () => {
-    setModalContent(<CreatePost closeModal={handleCloseModal} />);
+    setModalContent(<CreateBitacora closeModal={handleCloseModal} />);
     setShowModal(true);
   };
+
   const handleCloseModal = () => {
     setShowModal(false);
-    loadPosts(currentPage);
+    setModalContent(null);
   };
 
-  const handleEditButtonClick = (post) => {
-    setModalContent(<EditPost post={post} closeModal={handleCloseModal} />);
+  const handleEditButtonClick = (bitacora) => {
+    setModalContent(
+      <EditBitacora bitacora={bitacora} closeModal={handleCloseModal} />
+    );
     setShowModal(true);
   };
 
-  // Función para verificar si dos arrays de posts son iguales
   const arraysAreEqual = (array1, array2) => {
     if (array1.length !== array2.length) {
       return false;
@@ -106,6 +117,21 @@ const PostList = () => {
     return true;
   };
 
+  const handleTagFilter = (tagId) => {
+    if (tagId === null) {
+      setSelectedTags([]);
+    } else {
+      if (selectedTags.includes(tagId)) {
+        setSelectedTags(
+          selectedTags.filter((selectedTag) => selectedTag !== tagId)
+        );
+      } else {
+        setSelectedTags([...selectedTags, tagId]);
+      }
+    }
+    setCurrentPage(1);
+  };
+
   return (
     <div className="row mt-3">
       <div className="col-12 mb-3">
@@ -114,12 +140,36 @@ const PostList = () => {
             className={`alert ${success ? "alert-success" : "alert-danger"}`}
             role="alert"
           >
-            {success ? "Post eliminado con éxito" : error}
+            {success ? "Bitacora eliminada con éxito" : error}
           </div>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <h1>Lista de Posts</h1>
+          <h1>Lista de Bitacoras</h1>
           <AddButton onClick={handleAddButtonClick} />
+        </div>
+        <div className="col">
+          <h5>Filtrar por etiquetas:</h5>
+          <div className="btn-group">
+            <button
+              className={`btn btn-secondary ${
+                selectedTags.length === 0 ? "active" : ""
+              }`}
+              onClick={() => handleTagFilter(null)}
+            >
+              All
+            </button>
+            {tags.map((tag) => (
+              <button
+                key={tag.id}
+                className={`btn btn-secondary ${
+                  selectedTags.includes(tag.id) ? "active" : ""
+                }`}
+                onClick={() => handleTagFilter(tag.id)}
+              >
+                {tag.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       {loading ? (
@@ -136,21 +186,25 @@ const PostList = () => {
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
-                <tr key={post.id}>
-                  <td>{post.title.rendered}</td>
+              {bitacoras.map((bitacora) => (
+                <tr key={bitacora.id}>
+                  <td>{bitacora.title.rendered}</td>
                   <td
-                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                    dangerouslySetInnerHTML={{
+                      __html: bitacora.content.rendered,
+                    }}
                   ></td>
                   <td>
-                    {post.tags.map((tagId) => {
+                    {bitacora.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
                       return tag ? tag.name : "Sin etiqueta";
                     })}
                   </td>
                   <td className="d-flex justify-content-end">
-                    <EditButton onClick={() => handleEditButtonClick(post)} />
-                    <DeleteButton onClick={() => handleDelete(post.id)} />
+                    <EditButton
+                      onClick={() => handleEditButtonClick(bitacora)}
+                    />
+                    <DeleteButton onClick={() => handleDelete(bitacora.id)} />
                   </td>
                 </tr>
               ))}
@@ -181,4 +235,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default BitacoraList;

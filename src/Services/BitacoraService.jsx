@@ -2,9 +2,7 @@ const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
 
 const getBitacoras = async (page = 1, selectedTags, username, password) => {
   try {
-    let url = `${API_URL}/posts/?categories=23&password=${password}&page=${page}`;
-
-    // Agregar el parámetro de tags solo si selectedTag no es null
+    let url = `${API_URL}/posts/?categories=23&page=${page}&password=${password}`;
     if (selectedTags !== undefined && selectedTags !== null) {
       url += `&tags=${selectedTags}`;
     }
@@ -28,16 +26,15 @@ const getBitacoras = async (page = 1, selectedTags, username, password) => {
   }
 };
 
-const createBitacora = async (post, username, password) => {
+const createBitacora = async (bitacora, username, password) => {
   try {
-    post.password = password;
     const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
         Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(bitacora),
     });
     if (!response.ok) {
       throw new Error("Failed to create post");
@@ -50,16 +47,15 @@ const createBitacora = async (post, username, password) => {
   }
 };
 
-const editBitacora = async (postId, post, username, password) => {
+const editBitacora = async (bitacoraId, bitacora, username, password) => {
   try {
-    post.password = password;
-    const response = await fetch(`${API_URL}/posts/${postId}`, {
+    const response = await fetch(`${API_URL}/posts/${bitacoraId}`, {
       method: "PUT",
       headers: {
         Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(bitacora),
     });
     if (!response.ok) {
       throw new Error("Failed to edit post");
