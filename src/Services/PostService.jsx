@@ -93,7 +93,7 @@ const updatePost = async (postId, post) => {
 
 const getTags = async () => {
   try {
-    const response = await fetch(`${API_URL}/tags`, {
+    const response = await fetch(`${API_URL}/tags?per_page=100`, {
       method: "GET",
       headers: {
         Authorization: "Basic " + btoa(username + ":" + application_password),

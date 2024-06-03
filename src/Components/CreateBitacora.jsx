@@ -4,6 +4,7 @@ import { createBitacora } from "../Services/BitacoraService";
 const CreateBitacora = ({ onBitacoraCreated }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
