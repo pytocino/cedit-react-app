@@ -1,7 +1,11 @@
-import UserManagement from "../../Components/UserManagement";
+import UserList from "../../Components/UserList";
 
 const Users = () => {
-  return <UserManagement />;
+  return (
+    <div className="container mt-4">
+      <UserList />
+    </div>
+  );
 };
 
 export default Users;

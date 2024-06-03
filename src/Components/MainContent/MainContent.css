@@ -1,18 +1,20 @@
 .content {
   flex: 1;
   padding: 10px;
-  transition: margin-left 0.3s ease-in-out;
   margin-top: 5em;
+  transition: margin-left 0.3s ease-in-out; /* Mantengo la transición para margen izquierdo */
 }
 
 .content-with-sidebar {
   margin-top: 5em;
   margin-left: 280px;
+  padding: 10px;
+  transition: margin-left 0.3s ease-in-out; /* Mantengo la transición para margen izquierdo */
 }
 
 @media (max-width: 768px) {
   .content,
   .content-with-sidebar {
-    margin-left: 0;
+    margin-left: 0; /* Restablezco el margen izquierdo a 0 en pantallas pequeñas */
   }
 }

@@ -1,15 +1,13 @@
 // src/Services/userService.js
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
-const username = "admin";
-const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
-const getUsers = async (page = 1, perPage = 10) => {
+const getUsers = async (page = 1, perPage = 10, username, password) => {
   const url = `${API_URL}/users/?per_page=${perPage}&page=${page}`;
 
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
     });
@@ -25,12 +23,12 @@ const getUsers = async (page = 1, perPage = 10) => {
   }
 };
 
-const createUser = async (user) => {
+const createUser = async (user, username, password) => {
   try {
     const response = await fetch(`${API_URL}/users`, {
       method: "POST",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
@@ -47,13 +45,13 @@ const createUser = async (user) => {
   }
 };
 
-const deleteUser = async (userId, reassignId, authName) => {
+const deleteUser = async (userId, reassignId, username, password) => {
   try {
-    const forceDelete = authName === "admin" ? true : false;
+    const forceDelete = username === "admin" ? true : false;
     const response = await fetch(`${API_URL}/users/${userId}`, {
       method: "DELETE",
       headers: {
-        Authorization: "Basic " + btoa(authName + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -72,12 +70,12 @@ const deleteUser = async (userId, reassignId, authName) => {
   }
 };
 
-const updateUser = async (userId, user) => {
+const updateUser = async (userId, user, username, password) => {
   try {
     const response = await fetch(`${API_URL}/users/${userId}`, {
       method: "PUT",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
@@ -94,14 +92,14 @@ const updateUser = async (userId, user) => {
   }
 };
 
-const getRoles = async () => {
+const getRoles = async (username, password) => {
   try {
     const response = await fetch(
       `https://cedit.upct.es/wp-json/custom/v1/roles`,
       {
         method: "GET",
         headers: {
-          Authorization: "Basic " + btoa(username + ":" + application_password),
+          Authorization: "Basic " + btoa(username + ":" + password),
           "Content-Type": "application/json",
         },
       }

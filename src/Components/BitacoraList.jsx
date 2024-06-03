@@ -3,7 +3,8 @@ import { getBitacoras } from "../Services/BitacoraService";
 import AjaxLoader from "./AjaxLoader";
 import { DeleteButton } from "./DeleteButton";
 import { EditButton } from "./EditButton";
-import { deletePost, getTags } from "../Services/PostService";
+import { deleteAllTags, deletePost, getTags } from "../Services/PostService";
+import { useAuth } from "../Contexts/authContext";
 
 const BitacoraList = () => {
   const [bitacoras, setBitacoras] = useState([]);
@@ -13,17 +14,28 @@ const BitacoraList = () => {
   const prevPageBitacorasRef = useRef([]);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]); // Inicializar como un array vacío
+  const { auth } = useAuth();
 
   const loadBitacoras = async (page = 1) => {
     try {
       setLoading(true);
       let fetchedBitacoras = [];
       if (selectedTags.length > 0) {
-        fetchedBitacoras = await getBitacoras(page, selectedTags.join(","));
+        fetchedBitacoras = await getBitacoras(
+          page,
+          selectedTags.join(","),
+          auth.username,
+          auth.password
+        );
       } else {
-        fetchedBitacoras = await getBitacoras(page);
+        fetchedBitacoras = await getBitacoras(
+          page,
+          null,
+          auth.username,
+          auth.password
+        );
       }
-      const fetchedTags = await getTags();
+      const fetchedTags = await getTags(auth.username, auth.password);
       setBitacoras(fetchedBitacoras);
       setTags(fetchedTags);
       setHasMore(
@@ -44,7 +56,7 @@ const BitacoraList = () => {
 
   const handleDelete = async (bitacoraId) => {
     try {
-      await deletePost(bitacoraId);
+      await deletePost(bitacoraId, auth.username, auth.password);
       loadBitacoras();
     } catch (error) {
       console.error("Failed to delete bitacora:", error);
@@ -89,6 +101,12 @@ const BitacoraList = () => {
     setCurrentPage(1); // Resetear a la primera página al aplicar el filtro
   };
 
+  const handleDeleteAllTags = async () => {
+    deleteAllTags(auth.username, auth.password);
+    setSelectedTags([]);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="container mt-3">
       {loading ? (
@@ -120,6 +138,11 @@ const BitacoraList = () => {
                 ))}
               </div>
             </div>
+            {/* <div className="col my-2">
+              <button className="btn btn-danger" onClick={handleDeleteAllTags}>
+                Borrar todas las etiquetas
+              </button>
+            </div> */}
           </div>
           <div className="mt-5 d-flex justify-content-between">
             <button
@@ -168,7 +191,11 @@ const BitacoraList = () => {
                   <td>{bitacora.date}</td>
                   <td>
                     <div className="d-flex justify-content-end">
-                      <EditButton bitacora={bitacora} />
+                      <EditButton
+                        bitacora={bitacora}
+                        tags={tags}
+                        onClick={onclick}
+                      />
                       <DeleteButton onClick={() => handleDelete(bitacora.id)} />
                     </div>
                   </td>

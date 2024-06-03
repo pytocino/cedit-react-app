@@ -6,33 +6,39 @@ import {
   isAuthenticated as authServiceIsAuthenticated,
 } from "../Services/AuthService";
 
+// Crear contexto de autenticación
 const AuthContext = createContext();
 
+// Proveedor de autenticación
 export const AuthProvider = ({ children }) => {
+  // Inicializar estado de autenticación
   const [auth, setAuth] = useState(() => {
     const token = getToken();
     if (token) {
-      const [username] = atob(token).split(":");
-      return { username, token };
+      const [username, password] = atob(token).split(":");
+      return { username, password, token };
     }
-    return { username: null, token: null };
+    return { username: null, password: null, token: null };
   });
 
+  // Función de login
   const login = async (username, password) => {
     try {
       await authServiceAuthenticate(username, password);
-      setAuth({ username, token: getToken() });
+      setAuth({ username, password, token: getToken() });
     } catch (error) {
       console.error("Failed to login:", error);
-      throw error;
+      throw error; // Lanzar error para manejarlo en el componente llamador
     }
   };
 
+  // Función de logout
   const logout = () => {
     clearToken();
-    setAuth({ username: null, token: null });
+    setAuth({ username: null, password: null, token: null });
   };
 
+  // Proveer contexto de autenticación
   return (
     <AuthContext.Provider value={{ auth, login, logout }}>
       {children}
@@ -40,6 +46,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Hook personalizado para usar el contexto de autenticación
 export const useAuth = () => {
   return useContext(AuthContext);
 };

@@ -15,8 +15,11 @@ const Home = () => {
     const fetchRolesAndUserRoles = async () => {
       try {
         setLoading(true);
-        const fetchedRolesObject = await getRoles();
-        const fetchedUserRoles = await getUserRoles();
+        const fetchedRolesObject = await getRoles(auth.username, auth.password);
+        const fetchedUserRoles = await getUserRoles(
+          auth.username,
+          auth.password
+        );
         setRoles(fetchedRolesObject);
         setUserRoles(fetchedUserRoles);
       } catch (error) {
@@ -33,13 +36,6 @@ const Home = () => {
       userRole.roles.includes(roleId)
     );
     return usersWithRole.map((user) => user.user_login).join(", ");
-  };
-
-  const handleAddRandomUsers = async () => {
-    await addRandomUsers(10, roles); // Añadir 10 usuarios aleatorios
-    // Refrescar los roles de usuarios después de añadirlos
-    const fetchedUserRoles = await getUserRoles();
-    setUserRoles(fetchedUserRoles);
   };
 
   const roleEntries = Object.entries(roles);
@@ -77,17 +73,6 @@ const Home = () => {
               </div>
             ))
           )}
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <h1>Grupos</h1>
-            <button
-              onClick={handleAddRandomUsers}
-              className="btn btn-primary mb-3"
-            >
-              Añadir Usuarios Aleatorios
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,8 @@
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
-const username = "admin";
-const application_password = "mVef OAnh OdFn wgFK WAqL MeqL";
 
-const getBitacoras = async (page = 1, selectedTags) => {
+const getBitacoras = async (page = 1, selectedTags, username, password) => {
   try {
-    let url = `${API_URL}/posts/?categories=23&password=${application_password}&page=${page}`;
+    let url = `${API_URL}/posts/?categories=23&password=${password}&page=${page}`;
 
     // Agregar el parámetro de tags solo si selectedTag no es null
     if (selectedTags !== undefined && selectedTags !== null) {
@@ -14,7 +12,7 @@ const getBitacoras = async (page = 1, selectedTags) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
     });
@@ -30,13 +28,13 @@ const getBitacoras = async (page = 1, selectedTags) => {
   }
 };
 
-const createBitacora = async (post) => {
+const createBitacora = async (post, username, password) => {
   try {
-    post.password = application_password;
+    post.password = password;
     const response = await fetch(`${API_URL}/posts`, {
       method: "POST",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
@@ -52,13 +50,13 @@ const createBitacora = async (post) => {
   }
 };
 
-const editBitacora = async (postId, post) => {
+const editBitacora = async (postId, post, username, password) => {
   try {
-    post.password = application_password;
+    post.password = password;
     const response = await fetch(`${API_URL}/posts/${postId}`, {
       method: "PUT",
       headers: {
-        Authorization: "Basic " + btoa(username + ":" + application_password),
+        Authorization: "Basic " + btoa(username + ":" + password),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(post),
