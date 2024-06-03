@@ -49,7 +49,7 @@ const Sidebar = ({ showSidebar }) => {
               href="/bitacora"
               className={`nav-link ${isActive("/bitacora") && "active"}`}
             >
-              Bitacora
+              Bitácora
             </Link>
           </li>
           <li>

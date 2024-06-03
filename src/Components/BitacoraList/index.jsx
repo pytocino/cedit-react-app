@@ -144,7 +144,7 @@ const BitacoraList = () => {
           </div>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <h1>Lista de Bitacoras</h1>
+          <h1>Lista de Bitácoras</h1>
           <AddButton onClick={handleAddButtonClick} />
         </div>
         <div className="col">

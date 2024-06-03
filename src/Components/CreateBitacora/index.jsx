@@ -29,7 +29,7 @@ const CreateBitacora = ({ closeModal }) => {
 
   return (
     <div>
-      <h2 className="mb-4">Crear post</h2>
+      <h2 className="mb-4">Crear Bitácora</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group mb-3">
           <label htmlFor="title">Titulo</label>
@@ -52,7 +52,7 @@ const CreateBitacora = ({ closeModal }) => {
           ></textarea>
         </div>
         <button type="submit" className="btn btn-primary">
-          Crear bitacora
+          Crear bitácora
         </button>
       </form>
     </div>
