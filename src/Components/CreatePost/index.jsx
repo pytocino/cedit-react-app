@@ -11,7 +11,7 @@ const CreatePost = ({ closeModal }) => {
     e.preventDefault();
     try {
       await createPost(
-        { title, content, status: "publish", password: auth.password },
+        { title, content, status: "publish" },
         auth.username,
         auth.password
       );

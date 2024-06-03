@@ -15,7 +15,6 @@ const CreateBitacora = ({ closeModal }) => {
           title,
           content,
           status: "publish",
-          password: auth.password,
           categories: 23,
         },
         auth.username,
