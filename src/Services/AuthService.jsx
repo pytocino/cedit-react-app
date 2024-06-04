@@ -6,21 +6,29 @@ const setCookie = (name, value, minutes) => {
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 };
 
+const borrarTodasLasCookies = () => {
+  const cookies = document.cookie.split(";");
+
+  for (const cookie of cookies) {
+    const [name] = cookie.split("=");
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+  }
+};
+
 // Función para autenticar al usuario
 const authenticate = async (username, password) => {
   try {
-    const response = await fetch(`${API_URL}/users?context=edit`, {
-      method: "GET",
-      headers: {
-        Authorization: "Basic " + btoa(username + ":" + password),
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Authentication failed: Invalid username or password");
-    }
-
+    // const response = await fetch(`${API_URL}/users?context=edit`, {
+    //  method: "GET",
+    //  headers: {
+    //     Authorization: "Basic " + btoa(username + ":" + password),
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    // if (!response.ok) {
+    //   throw new Error("Authentication failed: Invalid username or password");
+    // }
+    borrarTodasLasCookies();
     setCookie("authToken", btoa(username + ":" + password), 15);
     return true;
   } catch (error) {
@@ -47,5 +55,7 @@ const clearToken = () => {
   document.cookie =
     "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 };
+
+
 
 export { authenticate, getToken, isAuthenticated, clearToken };

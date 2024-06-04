@@ -26,10 +26,10 @@ const AppContent = () => {
       {authenticated ? (
         <AuthenticatedLayout>
           <Switch>
-            <Route path="/" component={Home} />
-            <Route path="/users" component={Users} />
-            <Route path="/posts" component={Posts} />
-            <Route path="/bitacora" component={Bitacora} />
+            <Route path="/cedit-react-app/" component={Home} />
+            <Route path="/cedit-react-app/users" component={Users} />
+            <Route path="/cedit-react-app/posts" component={Posts} />
+            <Route path="/cedit-react-app/bitacora" component={Bitacora} />
           </Switch>
         </AuthenticatedLayout>
       ) : (

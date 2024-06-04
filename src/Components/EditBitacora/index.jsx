@@ -12,7 +12,7 @@ const EditBitacora = ({ bitacora, closeModal }) => {
     try {
       await editBitacora(
         bitacora.id,
-        { title, content: htmlContent, status: "publish" },
+        { title, content, status: "publish" },
         auth.username,
         auth.password
       );

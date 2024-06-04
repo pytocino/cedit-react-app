@@ -1,3 +1,4 @@
+import React from "react";
 import PostList from "../../Components/PostList";
 
 const Posts = () => {

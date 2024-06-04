@@ -1,5 +1,5 @@
 import "./styles.css";
-
+import React from "react";
 export const DeleteButton = ({ onClick }) => {
   return (
     <button className="bin-button" onClick={onClick}>

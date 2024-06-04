@@ -1,5 +1,6 @@
 import { clearToken } from "../../Services/AuthService";
 import "./styles.css";
+import React from "react";
 
 export const LogOut = () => {
   const handleLogout = () => {

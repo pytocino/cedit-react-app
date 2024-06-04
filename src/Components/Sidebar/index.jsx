@@ -24,38 +24,38 @@ const Sidebar = ({ showSidebar }) => {
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
           <li className="nav-item">
-            <Link href="/" className={`nav-link ${isActive("/") && "active"}`}>
+            <Link href="/cedit-react-app/" className={`nav-link ${isActive("/cedit-react-app/") && "active"}`}>
               Home
             </Link>
           </li>
           <li>
             <Link
-              href="/users"
-              className={`nav-link ${isActive("/users") && "active"}`}
+              href="/cedit-react-app/users"
+              className={`nav-link ${isActive("/cedit-react-app/users") && "active"}`}
             >
               Usuarios
             </Link>
           </li>
           <li>
             <Link
-              href="/posts"
-              className={`nav-link ${isActive("/posts") && "active"}`}
+              href="/cedit-react-app/posts"
+              className={`nav-link ${isActive("/cedit-react-app/posts") && "active"}`}
             >
               Posts
             </Link>
           </li>
           <li>
             <Link
-              href="/bitacora"
-              className={`nav-link ${isActive("/bitacora") && "active"}`}
+              href="/cedit-react-app/bitacora"
+              className={`nav-link ${isActive("/cedit-react-app/bitacora") && "active"}`}
             >
               Bitácora
             </Link>
           </li>
           <li>
             <Link
-              href="/other"
-              className={`nav-link ${isActive("/other") && "active"}`}
+              href="/cedit-react-app/other"
+              className={`nav-link ${isActive("/cedit-react-app/other") && "active"}`}
             >
               Other
             </Link>
