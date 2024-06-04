@@ -41,7 +41,7 @@ const BitacoraList = () => {
       setTags(fetchedTags);
       setHasMore(
         fetchedBitacoras.length >= 10 &&
-          !arraysAreEqual(fetchedBitacoras, prevPageBitacorasRef.current)
+        !arraysAreEqual(fetchedBitacoras, prevPageBitacorasRef.current)
       );
       prevPageBitacorasRef.current = fetchedBitacoras.slice();
     } catch (error) {
@@ -152,9 +152,8 @@ const BitacoraList = () => {
           <h5>Filtrar por etiquetas:</h5>
           <div className="btn-group">
             <button
-              className={`btn btn-secondary ${
-                selectedTags.length === 0 ? "active" : ""
-              }`}
+              className={`btn btn-secondary ${selectedTags.length === 0 ? "active" : ""
+                }`}
               onClick={() => handleTagFilter(null)}
             >
               All
@@ -162,9 +161,8 @@ const BitacoraList = () => {
             {tags.map((tag) => (
               <button
                 key={tag.id}
-                className={`btn btn-secondary ${
-                  selectedTags.includes(tag.id) ? "active" : ""
-                }`}
+                className={`btn btn-secondary ${selectedTags.includes(tag.id) ? "active" : ""
+                  }`}
                 onClick={() => handleTagFilter(tag.id)}
               >
                 {tag.name}
@@ -201,11 +199,13 @@ const BitacoraList = () => {
                       return tag ? tag.name : "Sin etiqueta";
                     })}
                   </td>
-                  <td className="d-flex justify-content-end">
-                    <EditButton
-                      onClick={() => handleEditButtonClick(bitacora)}
-                    />
-                    <DeleteButton onClick={() => handleDelete(bitacora.id)} />
+                  <td >
+                    <div className="d-flex justify-content-end">
+                      <EditButton
+                        onClick={() => handleEditButtonClick(bitacora)}
+                      />
+                      <DeleteButton onClick={() => handleDelete(bitacora.id)} />
+                    </div>
                   </td>
                 </tr>
               ))}
