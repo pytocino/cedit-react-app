@@ -43,7 +43,7 @@ const EditBitacora = ({ bitacora, closeModal }) => {
             setOptions={{
               buttonList: [
                 ["undo", "redo"],
-                ["fontSize"],
+                ["fontSize", "formatBlock"],
                 [
                   "bold",
                   "underline",
