@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../../Contexts/authContext";
 import { createBitacora } from "../../Services/BitacoraService";
+import SunEditor from "suneditor-react";
+import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
 const CreateBitacora = ({ closeModal }) => {
   const [title, setTitle] = useState("");
@@ -43,13 +45,34 @@ const CreateBitacora = ({ closeModal }) => {
         </div>
         <div className="form-group mb-3">
           <label htmlFor="content">Contenido</label>
-          <textarea
-            className="form-control"
-            id="content"
-            rows="5"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
+          <SunEditor
+            setOptions={{
+              buttonList: [
+                ["undo", "redo"],
+                ["fontSize", "formatBlock"],
+                [
+                  "bold",
+                  "underline",
+                  "italic",
+                  "strike",
+                ],
+                ["fontColor", "hiliteColor"],
+                ["align", "list"],
+
+                ["table", "horizontalRule", "link", "image"],
+                ['imageGallery'], // You must add the "imageGalleryUrl".
+                // ["fullScreen", "showBlocks", "codeView"],
+                ["removeFormat"]
+
+              ],
+              defaultTag: "div",
+              minHeight: "600px",
+              showPathLabel: false,
+            }}
+            setContents={content}
+            onChange={setContent}
+
+          />
         </div>
         <button type="submit" className="btn btn-primary">
           Crear bitácora
