@@ -1,6 +1,5 @@
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
 
-// Función para establecer una cookie
 const setCookie = (name, value, minutes) => {
   const expires = new Date(Date.now() + minutes * 60 * 1000).toUTCString();
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
@@ -8,10 +7,10 @@ const setCookie = (name, value, minutes) => {
 
 const borrarTodasLasCookies = () => {
   const cookies = document.cookie.split(";");
-
   for (const cookie of cookies) {
     const [name] = cookie.split("=");
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    console.log(name.trim());
+    document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
   }
 };
 
@@ -19,8 +18,8 @@ const borrarTodasLasCookies = () => {
 const authenticate = async (username, password) => {
   try {
     // const response = await fetch(`${API_URL}/users?context=edit`, {
-    //  method: "GET",
-    //  headers: {
+    //   method: "GET",
+    //   headers: {
     //     Authorization: "Basic " + btoa(username + ":" + password),
     //     "Content-Type": "application/json",
     //   },
@@ -36,6 +35,7 @@ const authenticate = async (username, password) => {
     throw error; // Lanzar error para manejarlo en el componente llamador
   }
 };
+
 
 // Función para obtener el token de autenticación de las cookies
 const getToken = () => {

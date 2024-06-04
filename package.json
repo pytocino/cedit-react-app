@@ -11,17 +11,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "alloyeditor": "^2.14.10",
     "axios": "^1.7.0",
     "backbone": "^1.6.0",
     "bootstrap": "^5.3.3",
     "formidable": "^3.5.1",
     "html-react-parser": "^5.1.10",
+    "jodit-react": "^4.1.2",
     "node-fetch": "^3.3.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^6.23.1",
+    "suneditor": "^2.46.3",
+    "suneditor-react": "^3.6.1",
     "wouter": "^3.1.3",
     "wpapi": "^1.2.2"
   },
