@@ -93,6 +93,7 @@ const BitacoraList = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setModalContent(null);
+    loadBitacoras(currentPage);
   };
 
   const handleEditButtonClick = (bitacora) => {
