@@ -33,7 +33,7 @@ const PostList = () => {
       // Verificar si hay más de 10 resultados y si los resultados son diferentes de la página anterior
       setHasMore(
         fetchedPosts.length >= 10 &&
-          !arraysAreEqual(fetchedPosts, prevPagePostsRef.current)
+        !arraysAreEqual(fetchedPosts, prevPagePostsRef.current)
       );
       prevPagePostsRef.current = fetchedPosts.slice(); // Copiar los resultados de la página actual para la próxima comparación
     } catch (error) {
@@ -148,9 +148,11 @@ const PostList = () => {
                       return tag ? tag.name : "Sin etiqueta";
                     })}
                   </td>
-                  <td className="d-flex justify-content-end">
-                    <EditButton onClick={() => handleEditButtonClick(post)} />
-                    <DeleteButton onClick={() => handleDelete(post.id)} />
+                  <td>
+                    <div className="d-flex justify-content-end">
+                      <EditButton onClick={() => handleEditButtonClick(post)} />
+                      <DeleteButton onClick={() => handleDelete(post.id)} />
+                    </div>
                   </td>
                 </tr>
               ))}

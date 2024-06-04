@@ -9,10 +9,14 @@ const borrarTodasLasCookies = () => {
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
     const [name] = cookie.split("=");
-    console.log(name.trim());
-    document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    const cookieName = name.trim();
+    if (cookieName !== "authToken") {
+      console.log(cookieName);
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    }
   }
 };
+
 
 // Función para autenticar al usuario
 const authenticate = async (username, password) => {
@@ -39,6 +43,7 @@ const authenticate = async (username, password) => {
 
 // Función para obtener el token de autenticación de las cookies
 const getToken = () => {
+  borrarTodasLasCookies();
   return document.cookie
     .split("; ")
     .find((row) => row.startsWith("authToken="))
