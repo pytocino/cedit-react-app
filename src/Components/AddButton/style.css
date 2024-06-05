@@ -6,7 +6,7 @@
   height: 60px;
   width: 60px;
   border: none;
-  background: green;
+  background: rgb(73, 138, 73);
   border-radius: 30px;
   cursor: pointer;
 }

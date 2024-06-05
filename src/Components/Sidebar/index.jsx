@@ -12,7 +12,7 @@ const Sidebar = ({ showSidebar }) => {
   return (
     <div className={`sidebar ${showSidebar ? "show" : ""}`}>
       <div
-        className="d-flex flex-column flex-shrink-0 p-3 bg-light"
+        className="d-flex flex-column flex-shrink-0 p-3"
         style={{ width: "280px" }}
       >
         <a
