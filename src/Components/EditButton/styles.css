@@ -6,9 +6,9 @@
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background-color: rgb(252, 255, 95);
+  background-color: rgb(241, 243, 136);
   cursor: pointer;
-  border: 2px solid rgb(255, 246, 121);
+  border: 2px solid rgb(241, 243, 136);
   transition-duration: 0.3s;
   position: relative;
   overflow: hidden;

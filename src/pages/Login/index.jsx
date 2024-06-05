@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { authenticate } from "../../Services/AuthService";
 import { useLocation } from "wouter";
 import { useNavigate, useNavigation } from "react-router-dom";
+import '../../index.css';
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
