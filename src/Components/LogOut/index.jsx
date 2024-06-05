@@ -5,7 +5,7 @@ import React from "react";
 export const LogOut = () => {
   const handleLogout = () => {
     clearToken();
-    window.location.href = "/login";
+    window.location.href = "/cedit-react-app/login";
   };
   return (
     <button className="Btn" onClick={handleLogout}>

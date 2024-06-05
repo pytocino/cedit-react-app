@@ -11,10 +11,15 @@ const EditPost = ({ post, closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newPost = {
+      title: title,
+      content: content,
+      status: "publish",
+    };
     try {
       await updatePost(
         post.id,
-        { title, content, status: "publish" },
+        newPost,
         auth.username,
         auth.password
       );
@@ -55,12 +60,12 @@ const EditPost = ({ post, closeModal }) => {
                 ["align", "list"],
 
                 ["table", "horizontalRule", "link", "image"],
-                ['imageGallery'], // You must add the "imageGalleryUrl".
+                //['imageGallery'], // You must add the "imageGalleryUrl".
                 // ["fullScreen", "showBlocks", "codeView"],
                 ["removeFormat"]
 
               ],
-              defaultTag: "div",
+              defaultTag: "p",
               minHeight: "600px",
               showPathLabel: false,
             }}

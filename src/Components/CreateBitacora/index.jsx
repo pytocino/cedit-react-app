@@ -11,20 +11,20 @@ const CreateBitacora = ({ closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newBitacora = {
+      title: title,
+      content: content,
+      status: "publish",
+      categories: 23,
+    };
     try {
       await createBitacora(
-        {
-          title,
-          content,
-          status: "publish",
-          categories: 23,
-        },
+        newBitacora,
         auth.username,
         auth.password
       );
       closeModal();
     } catch (error) {
-      console.error("Failed to create post:", error);
       setError("Failed to create post");
     }
   };
@@ -60,12 +60,12 @@ const CreateBitacora = ({ closeModal }) => {
                 ["align", "list"],
 
                 ["table", "horizontalRule", "link", "image"],
-                ['imageGallery'], // You must add the "imageGalleryUrl".
+                //['imageGallery'], // You must add the "imageGalleryUrl".
                 // ["fullScreen", "showBlocks", "codeView"],
                 ["removeFormat"]
 
               ],
-              defaultTag: "div",
+              defaultTag: "p",
               minHeight: "600px",
               showPathLabel: false,
             }}

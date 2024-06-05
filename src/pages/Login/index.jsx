@@ -9,6 +9,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const location = useLocation();
+  console.log(location);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ const LoginPage = () => {
 
     try {
       await authenticate(username, password);
-      const redirectPath = location[0];
+      const redirectPath = "/cedit-react-app";
       window.location.href = redirectPath;
     } catch (error) {
       setError("Usuario o contraseña incorrectos");
