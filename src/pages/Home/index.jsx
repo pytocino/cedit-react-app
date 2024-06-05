@@ -4,6 +4,7 @@ import { getRoles } from "../../Services/UserService";
 import AjaxLoader from "../../Components/AjaxLoader";
 import { useAuth } from "../../Contexts/authContext";
 import { addRandomUsers } from "../../Services/AddUsers";
+import './style.css';
 
 const Home = () => {
   const [roles, setRoles] = useState({});

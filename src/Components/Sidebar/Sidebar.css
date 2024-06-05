@@ -1,6 +1,6 @@
 .sidebar {
   width: 280px;
-  background-color: #f8f9fa;
+  background-color: #575858;
   transition: transform 0.3s ease-in-out;
   transform: translateX(-100%);
   position: fixed;
@@ -11,6 +11,22 @@
 
 .sidebar.show {
   transform: translateX(0);
+}
+
+.sidebar .nav-link {
+  color: #cccbcb; /* Color del texto en estado normal */
+  background-color: transparent; /* Fondo transparente en estado normal */
+  transition: background-color 0.3s ease; /* Suaviza la transición del fondo */
+}
+
+.sidebar .nav-link:hover {
+  background-color: #adadad; /* Fondo claro al pasar el ratón */
+  color: #000; /* Color del texto en estado hover */
+}
+
+.sidebar .nav-link.active {
+  background-color: #434344; /* Fondo azul para el enlace activo */
+  color: #e2e1e1; /* Color del texto para el enlace activo */
 }
 
 @media (max-width: 768px) {

@@ -1,8 +1,9 @@
+/* HEADER */
 .header {
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #f8f9fa;
+  background-color: #575858;
   width: 100%;
   position: fixed;
   top: 0;
@@ -11,9 +12,14 @@
 }
 
 .sidebar-toggle {
-  background-color: #007bff;
-  color: white;
+  background-color: #434344;
+  color: #cccbcb;
   border: none;
   padding: 10px;
   cursor: pointer;
+}
+
+/* Elimina el box-shadow azul en estado de foco (focus) */
+.btn:focus, .btn:active:focus, .btn.active:focus {
+  box-shadow: none;
 }

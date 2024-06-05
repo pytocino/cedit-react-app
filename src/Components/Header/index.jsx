@@ -4,7 +4,7 @@ import "./Header.css";
 
 const Header = ({ toggleSidebar }) => (
   <header className="header justify-content-between ">
-    <button className="sidebar-toggle btn btn-primary" onClick={toggleSidebar}>
+    <button className="sidebar-toggle btn" onClick={toggleSidebar}>
       ☰
     </button>
     <LogOut />
