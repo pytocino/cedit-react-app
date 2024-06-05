@@ -159,6 +159,9 @@ const UserList = () => {
               <tr>
                 <th>Nombre de usuario</th>
                 <th>Grupo</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Tarjeta</th>
                 <th className="text-end">Acciones</th>
               </tr>
             </thead>
@@ -182,6 +185,9 @@ const UserList = () => {
                         <p>No roles</p>
                       )}
                     </td>
+                    <td>{user.email}</td>
+                    <td>{user.meta.telefono}</td>
+                    <td>{user.meta.tarjeta === true ? "Si" : "No"}</td>
                     <td className="d-flex justify-content-end">
                       <DeleteButton onClick={() => handleDeleteUser(user.id)} />
                     </td>
