@@ -77,14 +77,14 @@ const CreateUser = ({ closeModal }) => {
     <div className="container-fluid mt-4">
       <div className="row">
         <div className="col-12">
-          <h1>Create User</h1>
+          <h1>Crear Usuario</h1>
         </div>
       </div>
       <div className="row">
         <div className="col-12">
           <form onSubmit={handleSubmit}>
             <div className="form-group mb-2">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">Nombre</label>
               <input
                 type="text"
                 className="form-control"
@@ -104,13 +104,33 @@ const CreateUser = ({ closeModal }) => {
               />
             </div>
             <div className="form-group mb-2">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="telefono">Teléfono</label>
+              <input
+                type="text"
+                className="form-control"
+                id="telefono"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+              />
+            </div>
+            <div className="form-group mb-2">
+              <label htmlFor="password">Contraseña</label>
               <input
                 type="password"
                 className="form-control"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="form-group mb-2">
+              <label htmlFor="tarjeta">Tarjeta</label>
+              <input
+                type="checkbox"
+                className="checkbox m-2"
+                id="tarjeta"
+                checked={tarjeta}
+                onChange={(e) => setTarjeta(e.target.checked)}
               />
             </div>
             <div className="form-group mb-2">
@@ -148,28 +168,8 @@ const CreateUser = ({ closeModal }) => {
                 )}
               </div>
             </div>
-            <div className="form-group mb-2">
-              <label htmlFor="telefono">Telefono</label>
-              <input
-                type="text"
-                className="form-control"
-                id="telefono"
-                value={telefono}
-                onChange={(e) => setTelefono(e.target.value)}
-              />
-            </div>
-            <div className="form-group mb-2">
-              <label htmlFor="tarjeta">Tarjeta</label>
-              <input
-                type="checkbox"
-                className="checkbox m-2"
-                id="tarjeta"
-                checked={tarjeta}
-                onChange={(e) => setTarjeta(e.target.checked)}
-              />
-            </div>
             <button type="submit" className="btn btn-primary">
-              Create User
+              Crear
             </button>
           </form>
         </div>
