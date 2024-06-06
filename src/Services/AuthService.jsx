@@ -63,4 +63,4 @@ const clearToken = () => {
 
 
 
-export { authenticate, getToken, isAuthenticated, clearToken };
+export { authenticate, getToken, isAuthenticated, clearToken, borrarTodasLasCookies };

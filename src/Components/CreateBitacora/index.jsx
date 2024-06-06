@@ -4,10 +4,11 @@ import { createBitacora } from "../../Services/BitacoraService";
 import SunEditor from "suneditor-react";
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
 
-const CreateBitacora = ({ closeModal }) => {
+const CreateBitacora = ({ closeModal, tags }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { auth } = useAuth();
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +17,7 @@ const CreateBitacora = ({ closeModal }) => {
       content: content,
       status: "publish",
       categories: 23,
+      tags: selectedTags,
     };
     try {
       await createBitacora(
@@ -28,6 +30,15 @@ const CreateBitacora = ({ closeModal }) => {
       setError("Failed to create post");
     }
   };
+
+  const handleTags = (e) => {
+    const tagId = parseInt(e.target.value);
+    if (selectedTags.includes(tagId)) {
+      setSelectedTags(selectedTags.filter((id) => id !== tagId));
+    } else {
+      setSelectedTags([...selectedTags, tagId]);
+    }
+  }
 
   return (
     <div>
@@ -60,8 +71,6 @@ const CreateBitacora = ({ closeModal }) => {
                 ["align", "list"],
 
                 ["table", "horizontalRule", "link", "image"],
-                //['imageGallery'], // You must add the "imageGalleryUrl".
-                // ["fullScreen", "showBlocks", "codeView"],
                 ["removeFormat"]
 
               ],
@@ -73,6 +82,29 @@ const CreateBitacora = ({ closeModal }) => {
             onChange={setContent}
 
           />
+        </div>
+        <div className="form-group mb-3">
+          <label htmlFor="tags">Etiquetas</label>
+          <div className="d-felx flex-wrap">
+            {tags.map((tag) => (
+              <div key={tag.id} className="form-check me-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={tag.id}
+                  id={`tag-${tag.id}`}
+                  checked={selectedTags.includes(tag.id)}
+                  onChange={handleTags}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`tag-${tag.id}`}
+                >
+                  {tag.name}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
         <button type="submit" className="btn btn-primary">
           Crear bitácora

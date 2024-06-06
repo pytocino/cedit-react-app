@@ -127,7 +127,7 @@ const UserList = () => {
             {success ? "Usuario eliminado con éxito" : error}
           </div>
         )}
-        <h1>Lista de usuarios</h1>
+        <h1>Usuarios</h1>
         <div className="d-flex justify-content-between">
           <div className="ms-3">
             <label htmlFor="roleFilter" className="me-2">
@@ -139,7 +139,7 @@ const UserList = () => {
               onChange={handleRoleChange}
               value={selectedRole}
             >
-              <option value="">All</option>
+              <option value="">Todos</option>
               {Object.entries(roles).map(([roleId, role]) => (
                 <option key={roleId} value={roleId}>
                   {role.name}

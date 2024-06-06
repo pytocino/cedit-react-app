@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { authenticate } from "../../Services/AuthService";
+import { authenticate, borrarTodasLasCookies } from "../../Services/AuthService";
 import { useLocation } from "wouter";
 import { useNavigate, useNavigation } from "react-router-dom";
 import '../../index.css';
@@ -15,7 +15,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+    borrarTodasLasCookies();
     try {
       await authenticate(username, password);
       const redirectPath = "/cedit-react-app";

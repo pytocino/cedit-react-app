@@ -91,7 +91,7 @@ const BitacoraList = () => {
   };
 
   const handleAddButtonClick = () => {
-    setModalContent(<CreateBitacora closeModal={handleCloseModal} />);
+    setModalContent(<CreateBitacora closeModal={handleCloseModal} tags={tags} />);
     setShowModal(true);
   };
 
@@ -150,7 +150,7 @@ const BitacoraList = () => {
           </div>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <h1>Lista de Bitácoras</h1>
+          <h1>Bitácora</h1>
           <AddButton onClick={handleAddButtonClick} />
         </div>
         <div className="col">
@@ -209,7 +209,7 @@ const BitacoraList = () => {
                   <td>
                     {bitacora.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
-                      return tag ? tag.name : "Sin etiqueta";
+                      return tag ? tag.name + ", " : "Sin etiqueta";
                     })}
                   </td>
                   <td >
