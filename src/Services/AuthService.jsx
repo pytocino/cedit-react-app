@@ -21,16 +21,16 @@ const borrarTodasLasCookies = () => {
 // Función para autenticar al usuario
 const authenticate = async (username, password) => {
   try {
-    // const response = await fetch(`${API_URL}/users?context=edit`, {
-    //   method: "GET",
-    //   headers: {
-    //     Authorization: "Basic " + btoa(username + ":" + password),
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    // if (!response.ok) {
-    //   throw new Error("Authentication failed: Invalid username or password");
-    // }
+    const response = await fetch(`${API_URL}/users?context=edit`, {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + btoa(username + ":" + password),
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Authentication failed: Invalid username or password");
+    }
     borrarTodasLasCookies();
     setCookie("authToken", btoa(username + ":" + password), 15);
     return true;
@@ -63,4 +63,4 @@ const clearToken = () => {
 
 
 
-export { authenticate, getToken, isAuthenticated, clearToken };
+export { authenticate, getToken, isAuthenticated, clearToken, borrarTodasLasCookies };

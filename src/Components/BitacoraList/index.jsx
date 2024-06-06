@@ -9,6 +9,7 @@ import AddButton from "../AddButton";
 import Modal from "../Modal";
 import CreateBitacora from "../CreateBitacora";
 import EditBitacora from "../EditBitacora";
+import { getUsers } from "../../Services/UserService";
 
 const BitacoraList = () => {
   const [bitacoras, setBitacoras] = useState([]);
@@ -24,6 +25,8 @@ const BitacoraList = () => {
   const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [users, setUsers] = useState([]);
+
 
   const loadBitacoras = async (page = 1) => {
     try {
@@ -35,8 +38,10 @@ const BitacoraList = () => {
         auth.username,
         auth.password
       );
-      const fetchedTags = await getTags(auth.username, auth.password);
 
+      const fetchedTags = await getTags(auth.username, auth.password);
+      const fetchedUsers = await getUsers(1, 10, auth.username, auth.password);
+      setUsers(fetchedUsers);
       setBitacoras(fetchedBitacoras);
       setTags(fetchedTags);
       setHasMore(
@@ -86,7 +91,7 @@ const BitacoraList = () => {
   };
 
   const handleAddButtonClick = () => {
-    setModalContent(<CreateBitacora closeModal={handleCloseModal} />);
+    setModalContent(<CreateBitacora closeModal={handleCloseModal} tags={tags} />);
     setShowModal(true);
   };
 
@@ -145,7 +150,7 @@ const BitacoraList = () => {
           </div>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <h1>Lista de Bitácoras</h1>
+          <h1>Bitácora</h1>
           <AddButton onClick={handleAddButtonClick} />
         </div>
         <div className="col">
@@ -178,6 +183,7 @@ const BitacoraList = () => {
           <table className="table">
             <thead>
               <tr>
+                <th>Autor</th>
                 <th>Titulo</th>
                 <th>Contenido</th>
                 <th>Etiquetas</th>
@@ -187,6 +193,13 @@ const BitacoraList = () => {
             <tbody>
               {bitacoras.map((bitacora) => (
                 <tr key={bitacora.id}>
+                  <td>
+                    {users.map((user) => {
+                      if (user.id === bitacora.author) {
+                        return user.name;
+                      }
+                    })}
+                  </td>
                   <td>{bitacora.title.rendered}</td>
                   <td
                     dangerouslySetInnerHTML={{
@@ -196,7 +209,7 @@ const BitacoraList = () => {
                   <td>
                     {bitacora.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
-                      return tag ? tag.name : "Sin etiqueta";
+                      return tag ? tag.name + ", " : "Sin etiqueta";
                     })}
                   </td>
                   <td >

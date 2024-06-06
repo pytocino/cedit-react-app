@@ -11,15 +11,19 @@ const CreatePost = ({ closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newPost = {
+      title: title,
+      content: content,
+      status: "publish",
+    };
     try {
       await createPost(
-        { title, content, status: "publish" },
+        newPost,
         auth.username,
         auth.password
       );
       closeModal();
     } catch (error) {
-      console.error("Failed to create post:", error);
       setError("Failed to create post");
     }
   };
@@ -55,12 +59,12 @@ const CreatePost = ({ closeModal }) => {
                 ["align", "list"],
 
                 ["table", "horizontalRule", "link", "image"],
-                ['imageGallery'], // You must add the "imageGalleryUrl".
+                //['imageGallery'], // You must add the "imageGalleryUrl".
                 // ["fullScreen", "showBlocks", "codeView"],
                 ["removeFormat"]
 
               ],
-              defaultTag: "div",
+              defaultTag: "p",
               minHeight: "600px",
               showPathLabel: false,
             }}

@@ -8,6 +8,7 @@ import AddButton from "../AddButton";
 import Modal from "../Modal"; // Importa el modal genérico
 import CreatePost from "../CreatePost";
 import EditPost from "../EditPost";
+import { getUsers } from "../../Services/UserService";
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
@@ -22,12 +23,15 @@ const PostList = () => {
   const [success, setSuccess] = useState(false); // Estado para mostrar mensaje de éxito
   const [error, setError] = useState(null); // Estado para mostrar mensaje de error
   const [showAlert, setShowAlert] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const loadPosts = async (page = 1) => {
     try {
       setLoading(true);
       const fetchedPosts = await getPosts(page, auth.username, auth.password);
       const fetchedTags = await getTags(auth.username, auth.password);
+      const fetchedUsers = await getUsers(1, 10, auth.username, auth.password);
+      setUsers(fetchedUsers);
       setPosts(fetchedPosts);
       setTags(fetchedTags);
       // Verificar si hay más de 10 resultados y si los resultados son diferentes de la página anterior
@@ -106,6 +110,8 @@ const PostList = () => {
     return true;
   };
 
+
+
   return (
     <div className="row mt-3">
       <div className="col-12 mb-3">
@@ -118,7 +124,7 @@ const PostList = () => {
           </div>
         )}
         <div className="d-flex justify-content-between align-items-center">
-          <h1>Lista de Posts</h1>
+          <h1>Posts</h1>
           <AddButton onClick={handleAddButtonClick} />
         </div>
       </div>
@@ -129,6 +135,7 @@ const PostList = () => {
           <table className="table">
             <thead>
               <tr>
+                <th>Autor</th>
                 <th>Titulo</th>
                 <th>Contenido</th>
                 <th>Etiquetas</th>
@@ -138,6 +145,13 @@ const PostList = () => {
             <tbody>
               {posts.map((post) => (
                 <tr key={post.id}>
+                  <td>
+                    {users.map((user) => {
+                      if (user.id === post.author) {
+                        return user.name;
+                      }
+                    })}
+                  </td>
                   <td>{post.title.rendered}</td>
                   <td
                     dangerouslySetInnerHTML={{ __html: post.content.rendered }}
@@ -145,7 +159,7 @@ const PostList = () => {
                   <td>
                     {post.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
-                      return tag ? tag.name : "Sin etiqueta";
+                      return tag ? tag.name + ", " : "Sin etiqueta";
                     })}
                   </td>
                   <td>

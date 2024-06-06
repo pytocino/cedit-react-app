@@ -10,10 +10,15 @@ const EditBitacora = ({ bitacora, closeModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newBitacora = {
+      title: title,
+      content: content,
+      status: "publish",
+    };
     try {
       await editBitacora(
         bitacora.id,
-        { title, content, status: "publish" },
+        newBitacora,
         auth.username,
         auth.password
       );
@@ -54,12 +59,12 @@ const EditBitacora = ({ bitacora, closeModal }) => {
                 ["align", "list"],
 
                 ["table", "horizontalRule", "link", "image"],
-                ['imageGallery'], // You must add the "imageGalleryUrl".
+                //['imageGallery'], // You must add the "imageGalleryUrl".
                 // ["fullScreen", "showBlocks", "codeView"],
                 ["removeFormat"]
 
               ],
-              defaultTag: "div",
+              defaultTag: "p",
               minHeight: "600px",
               showPathLabel: false,
             }}

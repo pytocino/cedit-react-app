@@ -8,6 +8,8 @@ const CreateUser = ({ closeModal }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [roles, setRoles] = useState(["subscriber"]);
+  const [telefono, setTelefono] = useState("");
+  const [tarjeta, setTarjeta] = useState(false);
   const [roleOptions, setRoleOptions] = useState([]);
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -40,9 +42,13 @@ const CreateUser = ({ closeModal }) => {
       username: name,
       name: name,
       email: email,
-      roles: roles,
       password: password,
+      meta: {
+        telefono: telefono,
+        tarjeta: tarjeta
+      }
     };
+
 
     try {
       await createUser(newUser, auth.username, auth.password);
@@ -50,9 +56,11 @@ const CreateUser = ({ closeModal }) => {
       setEmail("");
       setPassword("");
       setRoles(["subscriber"]);
+      setTelefono("");
+      setTarjeta(false);
       closeModal();
     } catch (error) {
-      console.log(error);
+      console.log("Error creating user:", error);
     }
   };
 
@@ -109,7 +117,7 @@ const CreateUser = ({ closeModal }) => {
               <label className="form-label">
                 Roles/Grupos{" "}
                 <small>
-                  (es necesario marcar al menos un rol/grupo, por defect está
+                  (es necesario marcar al menos un rol/grupo, por defecto está
                   marcado suscriptor)
                 </small>
               </label>
@@ -139,6 +147,26 @@ const CreateUser = ({ closeModal }) => {
                   <div>No hay roles disponibles.</div>
                 )}
               </div>
+            </div>
+            <div className="form-group mb-2">
+              <label htmlFor="telefono">Telefono</label>
+              <input
+                type="text"
+                className="form-control"
+                id="telefono"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+              />
+            </div>
+            <div className="form-group mb-2">
+              <label htmlFor="tarjeta">Tarjeta</label>
+              <input
+                type="checkbox"
+                className="checkbox m-2"
+                id="tarjeta"
+                checked={tarjeta}
+                onChange={(e) => setTarjeta(e.target.checked)}
+              />
             </div>
             <button type="submit" className="btn btn-primary">
               Create User

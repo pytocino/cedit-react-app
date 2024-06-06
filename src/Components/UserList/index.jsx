@@ -127,7 +127,7 @@ const UserList = () => {
             {success ? "Usuario eliminado con éxito" : error}
           </div>
         )}
-        <h1>Lista de usuarios</h1>
+        <h1>Usuarios</h1>
         <div className="d-flex justify-content-between">
           <div className="ms-3">
             <label htmlFor="roleFilter" className="me-2">
@@ -139,7 +139,7 @@ const UserList = () => {
               onChange={handleRoleChange}
               value={selectedRole}
             >
-              <option value="">All</option>
+              <option value="">Todos</option>
               {Object.entries(roles).map(([roleId, role]) => (
                 <option key={roleId} value={roleId}>
                   {role.name}
@@ -159,6 +159,9 @@ const UserList = () => {
               <tr>
                 <th>Nombre de usuario</th>
                 <th>Grupo</th>
+                <th>Correo</th>
+                <th>Telefono</th>
+                <th>Tarjeta</th>
                 <th className="text-end">Acciones</th>
               </tr>
             </thead>
@@ -182,6 +185,9 @@ const UserList = () => {
                         <p>No roles</p>
                       )}
                     </td>
+                    <td>{user.email}</td>
+                    <td>{user.meta.telefono}</td>
+                    <td>{user.meta.tarjeta === true ? "Si" : "No"}</td>
                     <td className="d-flex justify-content-end">
                       <DeleteButton onClick={() => handleDeleteUser(user.id)} />
                     </td>
