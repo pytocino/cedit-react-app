@@ -65,7 +65,7 @@ const EditBitacora = ({ bitacora, closeModal }) => {
 
               ],
               defaultTag: "p",
-              minHeight: "600px",
+              minHeight: "250px",
               showPathLabel: false,
             }}
             setContents={content}
