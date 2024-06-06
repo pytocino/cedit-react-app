@@ -159,7 +159,7 @@ const PostList = () => {
                   <td>
                     {post.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
-                      return tag ? tag.name : "Sin etiqueta";
+                      return tag ? tag.name + ", " : "Sin etiqueta";
                     })}
                   </td>
                   <td>

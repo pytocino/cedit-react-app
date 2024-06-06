@@ -19,6 +19,6 @@ body::before {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center; /* Centra la imagen */
-  opacity: 0.4; /* Ajusta la opacidad según necesites */
+  opacity: 0.25; /* Ajusta la opacidad según necesites */
   z-index: -1; /* Asegura que el pseudo-elemento esté debajo del contenido */
 }
