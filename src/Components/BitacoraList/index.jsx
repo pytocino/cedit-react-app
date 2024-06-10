@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import { getBitacoras } from "../../Services/BitacoraService";
+import React, { useState, useEffect } from "react";
 import AjaxLoader from "../AjaxLoader";
-import { deletePost, getTags } from "../../Services/PostService";
+import { deletePost } from "../../Services/PostService";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 import { useAuth } from "../../Contexts/authContext";
@@ -9,15 +8,10 @@ import AddButton from "../AddButton";
 import Modal from "../Modal";
 import CreateBitacora from "../CreateBitacora";
 import EditBitacora from "../EditBitacora";
-import { getUsers } from "../../Services/UserService";
+import useBitacoras from "../../Hooks/useBitacoras"; // Importa el hook personalizado
 
 const BitacoraList = () => {
-  const [bitacoras, setBitacoras] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [tags, setTags] = useState([]);
-  const prevPageBitacorasRef = useRef([]);
   const { auth } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -25,36 +19,8 @@ const BitacoraList = () => {
   const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [users, setUsers] = useState([]);
 
-
-  const loadBitacoras = async (page = 1) => {
-    try {
-      setLoading(true);
-      const tags = selectedTags.length > 0 ? selectedTags.join(",") : null;
-      const fetchedBitacoras = await getBitacoras(
-        page,
-        tags,
-        auth.username,
-        auth.password
-      );
-
-      const fetchedTags = await getTags(auth.username, auth.password);
-      const fetchedUsers = await getUsers(1, 10, auth.username, auth.password);
-      setUsers(fetchedUsers);
-      setBitacoras(fetchedBitacoras);
-      setTags(fetchedTags);
-      setHasMore(
-        fetchedBitacoras.length >= 10 &&
-        !arraysAreEqual(fetchedBitacoras, prevPageBitacorasRef.current)
-      );
-      prevPageBitacorasRef.current = fetchedBitacoras.slice();
-    } catch (error) {
-      console.error("Failed to load bitacoras:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { bitacoras, tags, users, loading, hasMore, loadBitacoras, error: loadError } = useBitacoras(currentPage, selectedTags);
 
   useEffect(() => {
     if (success || error) {
@@ -69,15 +35,13 @@ const BitacoraList = () => {
     }
   }, [success, error]);
 
-  useEffect(() => {
-    loadBitacoras(currentPage);
-  }, [currentPage, selectedTags]);
-
   const handleDelete = async (bitacoraId) => {
     try {
       await deletePost(bitacoraId, auth.username, auth.password);
       loadBitacoras(currentPage);
+      setSuccess(true);
     } catch (error) {
+      setError("Failed to delete bitacora");
       console.error("Failed to delete bitacora:", error);
     }
   };
@@ -98,6 +62,7 @@ const BitacoraList = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setModalContent(null);
+    loadBitacoras(currentPage);
   };
 
   const handleEditButtonClick = (bitacora) => {
@@ -105,21 +70,6 @@ const BitacoraList = () => {
       <EditBitacora bitacora={bitacora} closeModal={handleCloseModal} />
     );
     setShowModal(true);
-  };
-
-  const arraysAreEqual = (array1, array2) => {
-    if (array1.length !== array2.length) {
-      return false;
-    }
-    for (let i = 0; i < array1.length; i++) {
-      if (
-        array1[i].title.rendered !== array2[i].title.rendered ||
-        array1[i].content.rendered !== array2[i].content.rendered
-      ) {
-        return false;
-      }
-    }
-    return true;
   };
 
   const handleTagFilter = (tagId) => {
@@ -183,7 +133,7 @@ const BitacoraList = () => {
             <thead>
               <tr>
                 <th>Autor</th>
-                <th>Titulo</th>
+                <th>Título</th>
                 <th>Contenido</th>
                 <th>Etiquetas</th>
                 <th className="text-end">Acciones</th>
@@ -193,25 +143,17 @@ const BitacoraList = () => {
               {bitacoras.map((bitacora) => (
                 <tr key={bitacora.id}>
                   <td>
-                    {users.map((user) => {
-                      if (user.id === bitacora.author) {
-                        return user.name;
-                      }
-                    })}
+                    {users.find((user) => user.id === bitacora.author)?.name || "Desconocido"}
                   </td>
                   <td>{bitacora.title.rendered}</td>
-                  <td
-                    dangerouslySetInnerHTML={{
-                      __html: bitacora.content.rendered,
-                    }}
-                  ></td>
+                  <td dangerouslySetInnerHTML={{ __html: bitacora.content.rendered }}></td>
                   <td>
                     {bitacora.tags.map((tagId) => {
                       const tag = tags.find((tag) => tag.id === tagId);
                       return tag ? tag.name + ", " : "Sin etiqueta";
                     })}
                   </td>
-                  <td >
+                  <td>
                     <div className="d-flex justify-content-end">
                       <EditButton
                         onClick={() => handleEditButtonClick(bitacora)}
@@ -241,7 +183,7 @@ const BitacoraList = () => {
           </div>
         </>
       )}
-      <Modal show={showModal} onClose={handleCloseModal} title="Post">
+      <Modal show={showModal} onClose={handleCloseModal} title="Bitácora">
         {modalContent}
       </Modal>
     </div>

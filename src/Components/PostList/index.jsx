@@ -1,51 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
-import { deletePost, getPosts, getTags } from "../../Services/PostService";
+import React, { useState, useEffect } from "react";
+import { deletePost } from "../../Services/PostService";
 import AjaxLoader from "../AjaxLoader";
 import { EditButton } from "../EditButton";
 import { DeleteButton } from "../DeleteButton";
 import { useAuth } from "../../Contexts/authContext";
 import AddButton from "../AddButton";
-import Modal from "../Modal"; // Importa el modal genérico
+import Modal from "../Modal";
 import CreatePost from "../CreatePost";
 import EditPost from "../EditPost";
-import { getUsers } from "../../Services/UserService";
+import usePosts from "../../Hooks/usePosts"; // Importa tu hook personalizado
 
 const PostList = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [tags, setTags] = useState([]);
-  const prevPagePostsRef = useRef([]);
   const { auth } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState(null); // Estado para el contenido del modal
-  const [success, setSuccess] = useState(false); // Estado para mostrar mensaje de éxito
-  const [error, setError] = useState(null); // Estado para mostrar mensaje de error
+  const [modalContent, setModalContent] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [users, setUsers] = useState([]);
 
-  const loadPosts = async (page = 1) => {
-    try {
-      setLoading(true);
-      const fetchedPosts = await getPosts(page, auth.username, auth.password);
-      const fetchedTags = await getTags(auth.username, auth.password);
-      const fetchedUsers = await getUsers(1, 10, auth.username, auth.password);
-      setUsers(fetchedUsers);
-      setPosts(fetchedPosts);
-      setTags(fetchedTags);
-      // Verificar si hay más de 10 resultados y si los resultados son diferentes de la página anterior
-      setHasMore(
-        fetchedPosts.length >= 10 &&
-        !arraysAreEqual(fetchedPosts, prevPagePostsRef.current)
-      );
-      prevPagePostsRef.current = fetchedPosts.slice(); // Copiar los resultados de la página actual para la próxima comparación
-    } catch (error) {
-      console.error("Failed to load posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { posts, users, loading, hasMore, loadPosts } = usePosts(currentPage);
+
   useEffect(() => {
     if (success || error) {
       setShowAlert(true);
@@ -59,15 +34,13 @@ const PostList = () => {
     }
   }, [success, error]);
 
-  useEffect(() => {
-    loadPosts(currentPage);
-  }, [currentPage]);
-
   const handleDelete = async (postId) => {
     try {
       await deletePost(postId, auth.username, auth.password);
       loadPosts(currentPage);
+      setSuccess(true);
     } catch (error) {
+      setError("Failed to delete post");
       console.error("Failed to delete post:", error);
     }
   };
@@ -84,8 +57,10 @@ const PostList = () => {
     setModalContent(<CreatePost closeModal={handleCloseModal} />);
     setShowModal(true);
   };
+
   const handleCloseModal = () => {
     setShowModal(false);
+    loadPosts(currentPage);
   };
 
   const handleEditButtonClick = (post) => {
@@ -93,32 +68,11 @@ const PostList = () => {
     setShowModal(true);
   };
 
-  // Función para verificar si dos arrays de posts son iguales
-  const arraysAreEqual = (array1, array2) => {
-    if (array1.length !== array2.length) {
-      return false;
-    }
-    for (let i = 0; i < array1.length; i++) {
-      if (
-        array1[i].title.rendered !== array2[i].title.rendered ||
-        array1[i].content.rendered !== array2[i].content.rendered
-      ) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-
-
   return (
     <div className="row mt-3">
       <div className="col-12 mb-3">
         {showAlert && (
-          <div
-            className={`alert ${success ? "alert-success" : "alert-danger"}`}
-            role="alert"
-          >
+          <div className={`alert ${success ? "alert-success" : "alert-danger"}`} role="alert">
             {success ? "Post eliminado con éxito" : error}
           </div>
         )}
@@ -135,9 +89,8 @@ const PostList = () => {
             <thead>
               <tr>
                 <th>Autor</th>
-                <th>Titulo</th>
+                <th>Título</th>
                 <th>Contenido</th>
-                <th>Etiquetas</th>
                 <th className="text-end">Acciones</th>
               </tr>
             </thead>
@@ -145,22 +98,10 @@ const PostList = () => {
               {posts.map((post) => (
                 <tr key={post.id}>
                   <td>
-                    {users.map((user) => {
-                      if (user.id === post.author) {
-                        return user.name;
-                      }
-                    })}
+                    {users.find((user) => user.id === post.author)?.name || "Desconocido"}
                   </td>
                   <td>{post.title.rendered}</td>
-                  <td
-                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-                  ></td>
-                  <td>
-                    {post.tags.map((tagId) => {
-                      const tag = tags.find((tag) => tag.id === tagId);
-                      return tag ? tag.name + ", " : "Sin etiqueta";
-                    })}
-                  </td>
+                  <td dangerouslySetInnerHTML={{ __html: post.content.rendered }}></td>
                   <td>
                     <div className="d-flex justify-content-end">
                       <EditButton onClick={() => handleEditButtonClick(post)} />
