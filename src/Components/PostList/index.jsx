@@ -86,7 +86,6 @@ const PostList = () => {
   };
   const handleCloseModal = () => {
     setShowModal(false);
-    loadPosts(currentPage);
   };
 
   const handleEditButtonClick = (post) => {

@@ -98,7 +98,6 @@ const UserList = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    loadUsers(currentPage, selectedRole ? 100 : 10);
   };
 
   const [showAlert, setShowAlert] = useState(false);
