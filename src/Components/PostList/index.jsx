@@ -96,19 +96,21 @@ const PostList = () => {
             </thead>
             <tbody>
               {posts.map((post) => (
-                <tr key={post.id}>
-                  <td>
-                    {users.find((user) => user.id === post.author)?.name || "Desconocido"}
-                  </td>
-                  <td>{post.title.rendered}</td>
-                  <td dangerouslySetInnerHTML={{ __html: post.content.rendered }}></td>
-                  <td>
-                    <div className="d-flex justify-content-end">
-                      <EditButton onClick={() => handleEditButtonClick(post)} />
-                      <DeleteButton onClick={() => handleDelete(post.id)} />
-                    </div>
-                  </td>
-                </tr>
+                post.categories.includes(23) ? null : (
+                  <tr key={post.id}>
+                    <td>
+                      {users.find((user) => user.id === post.author)?.name || "Desconocido"}
+                    </td>
+                    <td>{post.title.rendered}</td>
+                    <td dangerouslySetInnerHTML={{ __html: post.content.rendered }}></td>
+                    <td>
+                      <div className="d-flex justify-content-end">
+                        <EditButton onClick={() => handleEditButtonClick(post)} />
+                        <DeleteButton onClick={() => handleDelete(post.id)} />
+                      </div>
+                    </td>
+                  </tr>
+                )
               ))}
             </tbody>
           </table>
