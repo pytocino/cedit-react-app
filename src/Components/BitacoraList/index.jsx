@@ -154,7 +154,7 @@ const BitacoraList = () => {
         </div>
         <div className="col">
           <h5>Filtrar por etiquetas:</h5>
-          <div className="btn-group">
+          <div className="btn-group" key={selectedTags.join('-')}>
             <button
               className={`btn btn-secondary ${selectedTags.length === 0 ? "active" : ""
                 }`}
