@@ -185,7 +185,7 @@ const UserList = () => {
                         <p>No roles</p>
                       )}
                     </td>
-                    <td>{user.email}</td>
+                    <td><a href="mailto:{user.email}">{user.email}</a></td>
                     <td>{user.meta.telefono}</td>
                     <td>{user.meta.tarjeta === true ? "Si" : "No"}</td>
                     <td className="d-flex justify-content-end">
