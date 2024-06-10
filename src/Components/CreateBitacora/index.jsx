@@ -85,7 +85,7 @@ const CreateBitacora = ({ closeModal, tags }) => {
         </div>
         <div className="form-group mb-3">
           <label htmlFor="tags">Etiquetas</label>
-          <div className="d-felx flex-wrap">
+          <div className="d-flex flex-wrap">
             {tags.map((tag) => (
               <div key={tag.id} className="form-check me-3">
                 <input

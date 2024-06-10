@@ -67,7 +67,7 @@ const BitacoraList = () => {
 
   const handleEditButtonClick = (bitacora) => {
     setModalContent(
-      <EditBitacora bitacora={bitacora} closeModal={handleCloseModal} />
+      <EditBitacora bitacora={bitacora} closeModal={handleCloseModal} tags={tags} />
     );
     setShowModal(true);
   };
