@@ -60,6 +60,11 @@ const LoginPage = () => {
                     required
                   />
                 </div>
+                <div className="form-group d-flex">
+                  <button type="button" className="btn btn-secondary" onClick={() => { window.location.href = 'https://cedit.upct.es/'; }}>
+                    Wordpress
+                  </button>
+                </div>
                 <div className="form-group d-flex justify-content-end">
                   <button type="submit" className="btn btn-primary">
                     Iniciar Sesión
