@@ -62,29 +62,6 @@ const EditBitacora = ({ bitacora, closeModal, tags }) => {
           />
         </div>
         <div className="form-group mb-3">
-          <label htmlFor="tags">Etiquetas</label>
-          <div className="d-flex flex-wrap">
-            {tags.map((tag) => (
-              <div key={tag.id} className="form-check me-3">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value={tag.id}
-                  id={`tag-${tag.id}`}
-                  checked={selectedTags.includes(tag.id)}
-                  onChange={handleTags}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor={`tag-${tag.id}`}
-                >
-                  {tag.name}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="form-group mb-3">
           <label htmlFor="content">Contenido</label>
           <SunEditor
             setOptions={{
@@ -114,6 +91,29 @@ const EditBitacora = ({ bitacora, closeModal, tags }) => {
             onChange={setContent}
 
           /></div>
+        <div className="form-group mb-3">
+          <label htmlFor="tags">Etiquetas</label>
+          <div className="d-flex flex-wrap">
+            {tags.map((tag) => (
+              <div key={tag.id} className="form-check me-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={tag.id}
+                  id={`tag-${tag.id}`}
+                  checked={selectedTags.includes(tag.id)}
+                  onChange={handleTags}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`tag-${tag.id}`}
+                >
+                  {tag.name}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
         <button type="submit" className="btn btn-primary">
           Actualizar bitácora
         </button>
