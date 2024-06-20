@@ -22,8 +22,10 @@ const UserList = () => {
   const [modalContent, setModalContent] = useState(null); // Estado para el contenido del modal
   const [success, setSuccess] = useState(false); // Estado para mostrar mensaje de éxito
   const [error, setError] = useState(null); // Estado para mostrar mensaje de error
+  const [selectedEmails, setSelectedEmails] = useState([]);
 
-  const loadUsers = async (page = 1, perPage = 10) => {
+
+  const loadUsers = async (page = 1, perPage = 1000) => {
     try {
       setLoading(true);
       const fetchedUsers = await getUsers(
@@ -43,6 +45,7 @@ const UserList = () => {
 
       const filteredUsers = filterUsersByRole(fetchedUsers, selectedRole);
       setUsers(filteredUsers);
+      setSelectedEmails(filteredUsers.map(user => user.email));
     } catch (error) {
       console.error("Failed to load users:", error);
     } finally {
@@ -51,7 +54,7 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    const perPage = selectedRole ? 100 : 10;
+    const perPage = selectedRole ? 1000 : 1000;
     loadUsers(currentPage, perPage);
   }, [currentPage, selectedRole]);
 
@@ -70,7 +73,7 @@ const UserList = () => {
         1
       );
       await deleteUser(userId, reassignId, auth.username, auth.password);
-      loadUsers(currentPage, selectedRole ? 100 : 10);
+      loadUsers(currentPage, selectedRole ? 1000 : 1000);
       setSuccess(true);
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -98,7 +101,7 @@ const UserList = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    loadUsers(currentPage, selectedRole ? 100 : 10);
+    loadUsers(currentPage, selectedRole ? 1000 : 1000);
   };
 
   const [showAlert, setShowAlert] = useState(false);
@@ -147,6 +150,12 @@ const UserList = () => {
               ))}
             </select>
           </div>
+          <a
+          href={`mailto:${selectedEmails.join(",")}`}
+          className="btn btn-secondary d-flex align-items-center justify-content-center"
+        >
+          Enviar correo al grupo seleccionado
+        </a>
           <AddButton onClick={handleAddButtonClick} />
         </div>
       </div>
@@ -185,7 +194,7 @@ const UserList = () => {
                         <p>No roles</p>
                       )}
                     </td>
-                    <td><a href="mailto:{user.email}">{user.email}</a></td>
+                    <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
                     <td>{user.meta.telefono}</td>
                     <td>{user.meta.tarjeta === true ? "Si" : "No"}</td>
                     <td className="d-flex justify-content-end">
