@@ -1,6 +1,6 @@
 // src/Services/userService.js
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
-const getUsers = async (page = 1, perPage = 10, username, password) => {
+const getUsers = async (page = 1, perPage = 100, username, password) => {
   const url = `${API_URL}/users/?per_page=${perPage}&page=${page}`;
 
   try {

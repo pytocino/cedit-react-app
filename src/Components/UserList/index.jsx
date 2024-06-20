@@ -25,7 +25,7 @@ const UserList = () => {
   const [selectedEmails, setSelectedEmails] = useState([]);
 
 
-  const loadUsers = async (page = 1, perPage = 1000) => {
+  const loadUsers = async (page = 1, perPage = 100) => {
     try {
       setLoading(true);
       const fetchedUsers = await getUsers(
@@ -54,7 +54,7 @@ const UserList = () => {
   };
 
   useEffect(() => {
-    const perPage = selectedRole ? 1000 : 1000;
+    const perPage = selectedRole ? 100 : 100;
     loadUsers(currentPage, perPage);
   }, [currentPage, selectedRole]);
 
@@ -73,7 +73,7 @@ const UserList = () => {
         1
       );
       await deleteUser(userId, reassignId, auth.username, auth.password);
-      loadUsers(currentPage, selectedRole ? 1000 : 1000);
+      loadUsers(currentPage, selectedRole ? 100 : 100);
       setSuccess(true);
     } catch (error) {
       console.error("Failed to delete user:", error);
@@ -101,7 +101,7 @@ const UserList = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-    loadUsers(currentPage, selectedRole ? 1000 : 1000);
+    loadUsers(currentPage, selectedRole ? 100 : 100);
   };
 
   const [showAlert, setShowAlert] = useState(false);
