@@ -151,7 +151,7 @@ const UserList = () => {
             </select>
           </div>
           <a
-          href={`mailto:${selectedEmails.join(",")}`}
+          href={`mailto:${selectedEmails.join(";")}`}
           className="btn btn-secondary d-flex align-items-center justify-content-center"
         >
           Enviar correo al grupo seleccionado
