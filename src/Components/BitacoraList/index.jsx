@@ -9,6 +9,8 @@ import Modal from "../Modal";
 import CreateBitacora from "../CreateBitacora";
 import EditBitacora from "../EditBitacora";
 import useBitacoras from "../../Hooks/useBitacoras"; // Importa el hook personalizado
+import { format } from 'date-fns';
+
 
 const BitacoraList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -133,6 +135,7 @@ const BitacoraList = () => {
             <thead>
               <tr>
                 <th>Autor</th>
+                <th>Fecha</th>
                 <th>Título</th>
                 <th>Contenido</th>
                 <th>Etiquetas</th>
@@ -145,6 +148,7 @@ const BitacoraList = () => {
                   <td>
                     {users.find((user) => user.id === bitacora.author)?.name || "Desconocido"}
                   </td>
+                  <td>{format(new Date(bitacora.date), 'dd/MM/yyyy')}</td>
                   <td>{bitacora.title.rendered}</td>
                   <td dangerouslySetInnerHTML={{ __html: bitacora.content.rendered }}></td>
                   <td>
