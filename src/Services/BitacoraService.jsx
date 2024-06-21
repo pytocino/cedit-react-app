@@ -1,10 +1,16 @@
 const API_URL = "https://cedit.upct.es/wp-json/wp/v2";
 
-const getBitacoras = async (page = 1, selectedTags, username, password) => {
+const getBitacoras = async (page = 1, selectedTags, startDate, endDate, username, password) => {
   try {
     let url = `${API_URL}/posts/?categories=23&page=${page}&password=${password}`;
     if (selectedTags !== undefined && selectedTags !== null) {
       url += `&tags=${selectedTags}`;
+    }
+
+    if (startDate && endDate) {
+      const formattedStartDate = new Date(startDate).toISOString();
+      const formattedEndDate = new Date(endDate).toISOString();
+      url += `&after=${formattedStartDate}&before=${formattedEndDate}`;
     }
 
     const response = await fetch(url, {
