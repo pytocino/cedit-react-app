@@ -21,8 +21,10 @@ const BitacoraList = () => {
   const [error, setError] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-  const { bitacoras, tags, users, loading, hasMore, loadBitacoras, error: loadError } = useBitacoras(currentPage, selectedTags);
+  const { bitacoras, tags, users, loading, hasMore, loadBitacoras, error: loadError } = useBitacoras(currentPage, selectedTags, startDate, endDate);
 
   useEffect(() => {
     if (success || error) {
@@ -124,6 +126,25 @@ const BitacoraList = () => {
                 {tag.name}
               </button>
             ))}
+          </div>
+        </div>
+        <div className="col mb-3">
+          <h5>Filtrar por fecha:</h5>
+          <div className="d-flex justify-content-between">
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="form-control me-2"
+              placeholder="Fecha de inicio"
+            />
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="form-control"
+              placeholder="Fecha de fin"
+            />
           </div>
         </div>
       </div>

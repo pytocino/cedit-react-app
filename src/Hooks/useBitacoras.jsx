@@ -4,7 +4,7 @@ import { getTags } from "../Services/PostService";
 import { getUsers } from "../Services/UserService";
 import { useAuth } from "../Contexts/authContext";
 
-const useBitacoras = (currentPage, selectedTags) => {
+const useBitacoras = (currentPage, selectedTags, startDate, endDate) => {
     const [bitacoras, setBitacoras] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasMore, setHasMore] = useState(true);
@@ -29,7 +29,7 @@ const useBitacoras = (currentPage, selectedTags) => {
             setLoading(true);
             const tags = selectedTags.length > 0 ? selectedTags.join(",") : null;
             const [fetchedBitacoras, fetchedTags, fetchedUsers] = await Promise.all([
-                getBitacoras(page, tags, auth.username, auth.password),
+                getBitacoras(page, tags, startDate, endDate, auth.username, auth.password),
                 getTags(auth.username, auth.password),
                 getUsers(1, 10, auth.username, auth.password),
             ]);
@@ -52,7 +52,7 @@ const useBitacoras = (currentPage, selectedTags) => {
 
     useEffect(() => {
         loadBitacoras(currentPage);
-    }, [currentPage, selectedTags]);
+    }, [currentPage, selectedTags, startDate, endDate]);
 
     return { bitacoras, tags, users, loading, hasMore, error, loadBitacoras };
 };
